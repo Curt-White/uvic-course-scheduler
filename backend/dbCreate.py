@@ -26,7 +26,7 @@ def makeCourseList(term, year):
         courseNames.extend(m)
     #create list coursenames ignore 1 letter words to prevent adding A,B,C,D... headers
     courseNames = [x for x in courseNames if len(x) > 1]
-    l1 = courseNames[:int(len(courseNames)/2):2];
+    l1 = courseNames[:int(len(courseNames)/2):2]
     #for each fos go to page and find all course numbers in that field
     for fos in l1:
         url = "https://web.uvic.ca/calendar"+str(year)+"-0"+terms[term]+"/CDs/"+fos+"/CTs.html"
@@ -101,9 +101,9 @@ def FillDataBase(fosList, term, year):
             for section in info:
                 #for thesis and research courses
                 if(len(info[0]) == 3):
-                    myCursor.execute("INSERT INTO courses VALUES(?,?,?,?,?,?,?,?,?,?)",(entry["name"],str(course),section['course_name'],section['section'], section['crn'], "N\A", "N\A", "N\A", "N\A", "N\A"))
+                    myCursor.execute("INSERT INTO {tableName} VALUES(?,?,?,?,?,?,?,?,?,?)".format(tableName = term+year),(entry["name"],str(course),section['course_name'],section['section'], section['crn'], "NA", "NA", "NA", "NA", "NA"))
                 else:
-                    myCursor.execute("INSERT INTO courses VALUES(?,?,?,?,?,?,?,?,?,?)",(entry["name"],str(course), section['course_name'],section['section'], section['crn'], section['time'], section['days'], section['building'], section['professor'], section['section_type']))
+                    myCursor.execute("INSERT INTO {tableName} VALUES(?,?,?,?,?,?,?,?,?,?)".format(tableName = term+year),(entry["name"],str(course), section['course_name'],section['section'], section['crn'], section['time'], section['days'], section['building'], section['professor'], section['section_type']))
                 conn.commit()
 
 """get all of the information from each page of every course and return alist of dictionaries where each dictionary has 1 course section on it aka A01, A02 would each be a list item"""
@@ -159,4 +159,4 @@ def main(term, year):
     FillDataBase(listOfCourses, term, year)
 
 if __name__ == "__main__":
-    main("winter",2018)
+    main("summer", "2018")
