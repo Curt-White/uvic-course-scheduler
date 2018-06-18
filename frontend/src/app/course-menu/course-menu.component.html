@@ -1,0 +1,13 @@
+<div id = "courseMenu" class = "container-fluid">
+  <div class = "row" id = "selectRow">
+      <div class="form-group col-sm-12">
+          <label for="courseSel">Select a Course:</label>
+          <select class="form-control" id="courseSel" size = "10">
+            <option *ngFor = "let item of options">{{item['field'] + " " + item['num'] + "  " + item['name']}}</option>
+          </select>
+        </div>
+  </div>
+  <div>
+    <button class = "col-sm-12 btn btn-success" id = "addCourseButton">Add Course</button>
+  </div>
+</div>

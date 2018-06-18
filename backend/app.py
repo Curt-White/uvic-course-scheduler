@@ -13,4 +13,7 @@ def index():
 @app.route('/getselectitems')
 def getSelect():
     return dbFetchUI.fetchSelectList("summer", "2018")
+    print("k")
 
+if __name__ == '__main__':
+     app.run(port=5000)

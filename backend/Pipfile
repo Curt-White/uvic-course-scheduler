@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 flask-cors = "*"
+"bs4" = "*"
 
 [dev-packages]
 
