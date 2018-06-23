@@ -1,13 +1,29 @@
 <div id = "courseMenu" class = "container-fluid">
   <div class = "row" id = "selectRow">
-      <div class="form-group col-sm-12">
-          <label for="courseSel">Select a Course:</label>
-          <select class="form-control" id="courseSel" size = "10">
-            <option *ngFor = "let item of options">{{item['field'] + " " + item['num'] + "  " + item['name']}}</option>
+    <form>
+      <div class="form-group">
+          <label for="courseSel" class = "formTitle">Select a Course:</label>
+          <select class="form-control" id="courseSel" size = "10" [(ngModel)]="selectedOption" name = "course">
+            <option *ngFor = "let item of options" [value] = "[item['field'] +'!' + item['num'] +'!' + item['name']]">{{item['field'] + " " + item['num'] + "  " + item['name']}}</option>
           </select>
         </div>
+    </form>
   </div>
-  <div>
-    <button class = "col-sm-12 btn btn-success" id = "addCourseButton">Add Course</button>
+  <div class = "row">
+    <button class = "col-sm-12 btn btn-success" id = "addCourseButton" (click) = "addCourse(); printOpt();">Add Course</button>
   </div>
+  <div *ngIf = "addError == true" class = "row" style = "height: 8vh;">
+      <div class="alert alert-danger errorMessage col-sm-12">
+          <strong>Failed</strong> to add <strong>{{lastSelected}}</strong> has already been added to the schedule.
+      </div>  
+  </div>
+    <div *ngFor = "let item of currentCourses; let i = index" id = "courseHolder" class = "row">
+      <div class = "courseCard col-sm-12" [id] = "i"> 
+        <div class = "row" style = "height: 100%;">
+          <div class = "colorTag col-sm-4" [ngStyle] = "{'background-color': currentCourses[i].color}"></div>
+          <span class = "col-sm-7 courseLabel">{{currentCourses[i].fos + '\n' + currentCourses[i].num + '\n' + currentCourses[i].name}}</span>
+          <button class = "btn btn-danger col-sm-1" (click) = "removeClass(i)">X</button>
+        </div>
+      </div>
+    </div>
 </div>
