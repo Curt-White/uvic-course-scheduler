@@ -10,7 +10,7 @@
     </form>
   </div>
   <div class = "row">
-    <button class = "col-sm-12 btn btn-success" id = "addCourseButton" (click) = "addCourse(); printOpt();">Add Course</button>
+    <button class = "col-sm-12 btn btn-success" id = "addCourseButton" (click) = "addCourse(); printOpt(); update();">Add Course</button>
   </div>
   <div *ngIf = "addError == true" class = "row" style = "height: 8vh;">
       <div class="alert alert-danger errorMessage col-sm-12">
@@ -22,7 +22,7 @@
         <div class = "row" style = "height: 100%;">
           <div class = "colorTag col-sm-4" [ngStyle] = "{'background-color': currentCourses[i].color}"></div>
           <span class = "col-sm-7 courseLabel">{{currentCourses[i].fos + '\n' + currentCourses[i].num + '\n' + currentCourses[i].name}}</span>
-          <button class = "btn btn-danger col-sm-1" (click) = "removeClass(i)">X</button>
+          <button class = "btn btn-danger col-sm-1" (click) = "removeClass(i); update();">X</button>
         </div>
       </div>
     </div>

@@ -37,7 +37,10 @@ class section:
     """transform the time into 24 hour time without colon and seperate day string into list"""
     def extractTime(self, courseInfo):
         oldTime = courseInfo[5]
+        print(oldTime)
         oldTime = timeOfDay = re.search(r'(^((\d{2}|\d)\:\d{2}) ([ap]m)) - ((\d{2}|\d)\:\d{2} ([ap]m))', oldTime)
+        if oldTime == None:
+            return "N/A"
         start = oldTime.group(2)
         end = oldTime.group(5)
         start = int(re.sub(r'[^0-9]', '', start))
@@ -142,7 +145,7 @@ def main(requestedCourses, term, year):
     possibility = []
     generateCalendar(allCourses, possibility)
     schedules = json.JSONEncoder().encode(toJson())
-    print(schedules)
+    return schedules
 
 if __name__ == "__main__":
     main([{"fos" : "ASTR", "num" : "101"}, {"fos" : "ECON", "num" : "180"}], "summer", "2018")

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientJsonpModule } from '@angular/common/http';
 import { API_URL } from '../env';
 import { FormsModule } from '@angular/forms';
 import { course } from '../course.model';
+
+import {observable} from 'rxjs';
 
 @Component({
   selector: 'app-course-menu',
@@ -16,6 +18,8 @@ export class CourseMenuComponent implements OnInit {
   selectedOption;
   lastSelected;
   options;
+
+  schedules;
   
   addError = false;
 
@@ -27,19 +31,26 @@ export class CourseMenuComponent implements OnInit {
     this.getOptions();
   }
 
+  update(){
+    var courseList = this.http.post(API_URL + "/schedule", JSON.stringify(this.currentCourses)).subscribe(data =>{
+      console.log(courseList);
+    });
+    console.log(courseList);
+  }
+
   addCourse(){
     this.lastSelected = this.selectedOption.split("!");
-    this.lastSelected = this.lastSelected[0] + "! " + this.lastSelected[1];
+    this.lastSelected = this.lastSelected[0] + " " + this.lastSelected[1];
+
     if(this.currentCourses.filter(e => e.comp === this.selectedOption).length > 0){
       this.addError = true;
       
     }else{
-      console.log(this.selectedOption);
+
       var tempString = this.selectedOption.split("!");
       var tempColor = "#" + Math.random().toString(16).slice(2, 8);
       var temp = new course(tempString[0], tempString[1], tempColor, this.selectedOption, tempString[2]);
       this.currentCourses.push(temp);
-      
       this.addError = false;
     }
   }
@@ -51,13 +62,10 @@ export class CourseMenuComponent implements OnInit {
   getOptions() {
     this.http.get(API_URL + "/getselectitems").subscribe(data => {
       this.options = data as JSON;
-      //console.log(this.options);
     });
   }
 
-
   printOpt(){
-    console.log(this.currentCourses);
+    //console.log(this.currentCourses);
   }
-
 }

@@ -10,10 +10,16 @@ CORS(app)
 def index():
     return ''
 
-@app.route('/getselectitems')
+@app.route('/getselectitems', methods = ["GET"])
 def getSelect():
     return dbFetchUI.fetchSelectList("summer", "2018")
-    print("k")
+
+@app.route('/schedule', methods = ["POST", "GET"])
+def returnSchedule():
+    json = request.get_json(force=True)
+    schedules = generateSchedules.main(json, "summer", "2018")
+    print(schedules)
+    return schedules
 
 if __name__ == '__main__':
      app.run(port=5000)
