@@ -1,8 +1,7 @@
 # courseScheduler
 Student Schedule Generator
 
-The folder containing old files was the original version which broke and now refuses to load the stylsheets properly.
-Some of the original files are not present in the folder and it does not function as a whole application anymore.
+The folder containing old files was the original version which has very little functionality and does little more than showing the schedule possibilities. This is version still has more functionality than the current version. To launch the original version navigate to the "oldfiles" directory and run "python3 main.py"
 
 The frontend contains the angular application interface which interfaces the backend Flask python API.
 
