@@ -1,0 +1,181 @@
+*{
+    box-sizing: border-box;
+}
+/*the three main sections and not yet included footer*/
+.section{
+    float: left;
+    border-radius: 0.5vw;
+    background-color: rgb(80, 81, 82);
+    border: 0.05vw solid black;
+}
+
+#schedule{
+    width:69.5vw;
+    height: 93vh;
+    max-width: 69.5%;
+    margin-right: .49vw;
+}
+
+#topMenu{
+    height: 5vh;
+    width: 100vw;
+    max-width: 100%;
+    margin-bottom: .5%;
+}
+/************************************************/
+/*elements included inside the right option menu*/
+#selectionMenu{
+    width: 30vw;
+    height: 93vh;
+    max-width: 30%;
+}
+
+#selectionOptions{
+    width:90%;
+    height: 5%;
+    background-color: white;
+    margin: auto;
+    margin-top: 5%;
+}
+/*********************************/
+/*main schedule elements */
+#mainSchedule{
+    height: 81.5vh;
+    width: 65vw;
+    background-color: white;
+    margin: 2.5%;
+    border: 0.05vw solid black;
+    overflow: scroll;
+}
+
+.dayRow{
+    display: table-cell;
+    width: 15%;
+    border: 0.05vw solid lightgray;
+    border-collapse: collapse;
+    background-color: whitesmoke;
+}
+
+#schedTable{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#timeRow{
+    width: 10%;
+    border: 0.05vw solid lightgray;
+    border-collapse: collapse;
+    background-color:whitesmoke;
+}
+
+.timerow{
+    border: 0.05vw solid lightgray; 
+    background-color:whitesmoke;
+    height: 10%;
+}
+
+.timeColumn, .tableCourse {
+    display: table-cell;
+    padding-top: .5%;
+    padding-bottom: .5%;
+    border: 0.05vw solid lightgray; 
+    text-align: center;
+    vertical-align: top;
+}
+
+#calendarobj{
+    display: none;
+    font-size: 1vh;
+    height: 1vw;
+    width: 100%;
+}
+
+#schedButtons{
+    height: 5%;
+    width: 65vw;
+    margin-top: 2.5%;
+    margin-left: 2.5%;
+    background-color: rgb(80, 81, 82);
+}
+
+.schedButton{
+    height: 100%;
+    width: 15%;
+
+}
+
+.schedBlank{
+    border: .05vw dashed lightgrey;
+    background-color: white;
+    border-collapse: collapse;
+}
+/**********************************/
+/*elements withing the course div*/
+#courseDiv{
+    width: 90%;
+    height: 89.5%;
+    min-height: 88.5%;
+    max-height: 89.5%;
+    margin: auto;
+    margin-top: 2.5%;
+    overflow: scroll;
+    background-color: white;
+    border: 0.05vw solid black;
+}
+
+#addCourse{
+    width: 100%;
+    height:100%;
+}
+
+/*parts inside a course element*/
+.Course{
+    z-index: -1;
+    display: none;
+    width: 100%;
+    height: 20%;
+    border-bottom: 0.05vw solid black ;
+}
+
+.selector {
+    display: inline-block;
+    width: 45%;
+    border-radius: .5vw;
+    overflow: hidden;
+    background: #fafafa no-repeat 90% 50%;
+    border: 0.05vw solid black;  
+    margin-left: 1.7vw;
+    margin-top: 2vh;
+}
+
+.selector select {
+    padding: .5vh .8vw;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+}
+
+.selector select:focus {
+    outline: none;
+}
+
+.courseAddButton, .courseCancelButton{
+    width: 40%;
+    height: 20%;
+    margin-left: 6%;
+    margin-top: 8%;
+    display: inline-block;
+}
+
+.courseRemoveButton{
+    width: .5vw;
+    height: 1.5vh;
+    float: right;
+    display: none;
+    margin-right: 2%;
+    margin-top: 2%;
+    background-color: lightcoral;
+}
