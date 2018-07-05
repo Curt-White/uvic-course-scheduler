@@ -4,6 +4,7 @@ export class course{
         public num: string,
         public color: string,
         public comp: string,
-        public name: string
+        public name: string,
+        public info: any
     ){}
 }

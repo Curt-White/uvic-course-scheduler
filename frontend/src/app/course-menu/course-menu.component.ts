@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { HttpClient, HttpClientJsonpModule } from '@angular/common/http';
 import { API_URL } from '../env';
 import { FormsModule } from '@angular/forms';
@@ -17,55 +17,91 @@ export class CourseMenuComponent implements OnInit {
 
   selectedOption;
   lastSelected;
-  options;
+  
+  searchOptions;
+  searchActive;
 
   schedules;
   
   addError = false;
 
+  @HostListener('document:click', ['$event'])
+  documentClick(event: MouseEvent) {
+      if(document.activeElement.id == "courseSel"){
+        this.searchActive = true;
+      }else{
+        this.searchActive = false;
+      }
+  }
+
   constructor(private http: HttpClient) { 
     this.currentCourses = [];
+    this.searchOptions = [];
+    this.searchActive = false;
+    this.schedules = [];
   }
 
   ngOnInit() {
-    this.getOptions();
   }
 
   update(){
     var courseList = this.http.post(API_URL + "/schedule", JSON.stringify(this.currentCourses)).subscribe(data =>{
-      console.log(courseList);
+      this.schedules = data as JSON;
     });
-    console.log(courseList);
   }
 
-  addCourse(){
-    this.lastSelected = this.selectedOption.split("!");
-    this.lastSelected = this.lastSelected[0] + " " + this.lastSelected[1];
+  updateSearchBar(event:any){
+    var temp = event.target;
+    while(temp.childNodes.length < 3){
+      temp = temp.parentNode;
+    }
+    temp = temp.childNodes[2].value;
+    this.selectedOption = this.searchOptions[temp];
+  }
+
+  addCourse(event:any){
+    this.lastSelected = this.selectedOption;
+
+    var currentNode = event.target;
+    while(currentNode.childNodes.length < 3){
+      currentNode = currentNode.parentNode;
+    }
+    var optionNumber = currentNode.childNodes[2].value;
+    this.selectedOption = this.searchOptions[optionNumber];
 
     if(this.currentCourses.filter(e => e.comp === this.selectedOption).length > 0){
       this.addError = true;
       
     }else{
-
-      var tempString = this.selectedOption.split("!");
       var tempColor = "#" + Math.random().toString(16).slice(2, 8);
-      var temp = new course(tempString[0], tempString[1], tempColor, this.selectedOption, tempString[2]);
+      var info;
+      var temp = new course(this.selectedOption['field'], this.selectedOption['num'], tempColor, this.selectedOption, this.selectedOption['name'], info);
       this.currentCourses.push(temp);
+      this.getCourseInfo();
+      console.log(this.currentCourses[this.currentCourses.length-1]);
       this.addError = false;
     }
+  }
+
+  getCourseInfo(){
+    this.http.post(API_URL + "/courseData", JSON.stringify(this.selectedOption)).subscribe(data => {
+      this.currentCourses[this.currentCourses.length-1].info = data as JSON;
+    });
+  }
+
+  getSearchResults(value:string){
+    this.http.post(API_URL + "/search", JSON.stringify(value)).subscribe(data => {
+      this.searchOptions = data as JSON;
+    });
   }
 
   removeClass(i:number){
     this.currentCourses.splice(i,1);
   }
 
-  getOptions() {
-    this.http.get(API_URL + "/getselectitems").subscribe(data => {
-      this.options = data as JSON;
-    });
-  }
-
-  printOpt(){
-    //console.log(this.currentCourses);
+  print(event:number){
+    for (var i = 0; i < this.currentCourses.length; i++){
+      console.log(this.currentCourses[i]);
+    }
   }
 }

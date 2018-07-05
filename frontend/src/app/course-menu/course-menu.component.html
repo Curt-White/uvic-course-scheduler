@@ -1,28 +1,49 @@
 <div id = "courseMenu" class = "container-fluid">
-  <div class = "row" id = "selectRow">
-    <form>
-      <div class="form-group">
-          <label for="courseSel" class = "formTitle">Select a Course:</label>
-          <select class="form-control" id="courseSel" size = "10" [(ngModel)]="selectedOption" name = "course">
-            <option *ngFor = "let item of options" [value] = "[item['field'] +'!' + item['num'] +'!' + item['name']]">{{item['field'] + " " + item['num'] + "  " + item['name']}}</option>
-          </select>
-        </div>
-    </form>
+
+  <form class = "row" style = "margin-top: 3%;">
+      <div class="input-group input-group-lg">
+        <input #search type="text" class="form-control" id = "courseSel" (keyup) = "getSearchResults(search.value)" placeholder="Search Courses" autocomplete="off" (click) = "searchActive = true;" >
+        <span class="input-group-btn">
+          <button class="btn btn-danger btn-lg" type="button" (click) = "search.value = ''" style = "border-top-left-radius: 0; border-bottom-left-radius: 0">Clear</button>
+        </span>
+      </div>
+  </form>
+
+<div *ngIf = "searchActive == true" class = "row selectRow">
+  <div class = "list-group dropGroup col-sm-11">
+    <div *ngFor = "let item of searchOptions;let index = index;">
+      <div class = "list-group-item list-group-item-action flex-column align-items-start w-100 p-3" (click) = "addCourse($event); update();">
+        <div><strong>{{item['field']}} {{item['num']}}</strong></div>
+        <div>{{item['name']}}</div>
+        <option value = "{{index}}" style = "display: none;"></option>
+      </div>
+    </div>
   </div>
-  <div class = "row">
-    <button class = "col-sm-12 btn btn-success" id = "addCourseButton" (click) = "addCourse(); printOpt(); update();">Add Course</button>
-  </div>
+</div>
+
   <div *ngIf = "addError == true" class = "row" style = "height: 8vh;">
       <div class="alert alert-danger errorMessage col-sm-12">
-          <strong>Failed</strong> to add <strong>{{lastSelected}}</strong> has already been added to the schedule.
+          <strong>Failed</strong> to add <strong>{{lastSelected['field']}} {{lastSelected['num']}}</strong> has already been added to the schedule.
       </div>  
   </div>
     <div *ngFor = "let item of currentCourses; let i = index" id = "courseHolder" class = "row">
       <div class = "courseCard col-sm-12" [id] = "i"> 
         <div class = "row" style = "height: 100%;">
-          <div class = "colorTag col-sm-4" [ngStyle] = "{'background-color': currentCourses[i].color}"></div>
-          <span class = "col-sm-7 courseLabel">{{currentCourses[i].fos + '\n' + currentCourses[i].num + '\n' + currentCourses[i].name}}</span>
-          <button class = "btn btn-danger col-sm-1" (click) = "removeClass(i); update();">X</button>
+          <div class = "colorTag col-sm-1" [ngStyle] = "{'background-color': currentCourses[i].color}"><div class = "row"><button class = "btn btn-danger removeButton col-sm-12" (click) = "removeClass(i); update();">X</button></div></div>
+          <div class = "col-sm-10 courseLabel">
+            <strong>{{item.fos}} {{item.num}}</strong>
+            <div *ngIf = "item.info">
+              <div *ngIf = "item.info['Lecture'].length > 0">Lecture
+                  <form><div class = "radio"  *ngFor = "let m of item.info['Lecture']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}LecRadio"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label></div></form>
+              </div>
+              <div *ngIf = "item.info['Lab'].length > 0">Lab
+                  <form><div class = "radio"  *ngFor = "let m of item.info['Lab']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}LabRadio"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label></div></form>
+              </div>
+              <div *ngIf = "item.info['Tutorial'].length > 0">Tutorial
+                  <form><div class = "radio"  *ngFor = "let m of item.info['Tutorial']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}TutRadio"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label></div></form>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

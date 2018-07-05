@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name= "viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
+    <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/sCanvas.js') }}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Schedule Maker</title>
+</head>
+<body>
+    <div id = "calendarobj">
+        <div id = "caltop"></div>
+        <div id = "calbottom"></div>
+    </div>
+    <div class = "section" id = "topMenu"></div>
+    <div class = "section" id = "schedule">
+        <div id = "schedButtons">
+            <button class = "schedButton" id = "saveButton">Save</button>
+            <button class = "schedButton" id = "lastButton">Last</button>
+            <button class = "schedButton" id = "nextButton">Next</button>
+            <button class = "schedButton" id = "savedSchedules">Saved Schedules</button>
+        </div>
+        <div id = "mainSchedule">
+            <table id = "schedTable">
+                <tr>
+                    <th id = "timeRow">
+                        <span>Time</span>
+                    </th>
+                    <th class = "dayRow">
+                        <span>Monday</span>
+                    </th>
+                    <th class = "dayRow">
+                        <span>Tuesday</span>  
+                    </th>
+                    <th class = "dayRow">
+                        <span>Wednesday</span>  
+                    </th>
+                    <th class = "dayRow">
+                        <span>Thursday</span>  
+                    </th>
+                    <th class = "dayRow">
+                        <span>Friday</span>  
+                    </th>
+                    <th class = "dayRow">
+                        <span>Saturday</span>  
+                    </th>
+                    
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!--starts of right menu division-->
+    <div class = "section" id = "selectionMenu">
+        <div id = "selectionOptions">
+            <button id = "addCourse" >Add Course</button>
+        </div>
+        <div id = "courseDiv">
+            <!--course element dynamically added-->
+            <div id = "course" class = "Course">
+                <div class = "topcoursediv">
+                    <button class = "courseRemoveButton"></button>
+                </div>
+                <div class = "midcoursediv">
+                    <div class = "selector">
+                        <select id = "" class = "fosDropdown" name = "Field of Study"></select>
+                    </div>
+                    <div class = "selector">
+                        <select id = "" class = "numDropdown" name = "Course Number"></select>
+                    </div>
+                </div>
+                <div class = "bottomcoursediv">
+                    <button class = "courseAddButton">Add</button>
+                    <button class = "courseCancelButton">Cancel</button>
+                </div>
+                
+            </div><!--course elemnt end-->
+        </div>
+    </div><!--end of right menu div-->
+</body>
+</html>

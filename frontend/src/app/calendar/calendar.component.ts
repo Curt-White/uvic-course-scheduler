@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CourseMenuComponent } from '../course-menu/course-menu.component';
 
 @Component({
   selector: 'app-calendar',
@@ -11,6 +12,10 @@ export class CalendarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  updateCalendar(){
+    
   }
 
 }

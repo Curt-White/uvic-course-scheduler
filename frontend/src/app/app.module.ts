@@ -18,7 +18,7 @@ import { CourseHolderComponent } from './course-holder/course-holder.component';
     CourseMenuComponent,
     CalendarComponent,
     CourseCardComponent,
-    CourseHolderComponent
+    CourseHolderComponent,
   ],
   imports: [
     BrowserModule,

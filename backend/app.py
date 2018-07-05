@@ -2,6 +2,7 @@
 from flask import Flask, render_template, send_file, request
 import dbCreate, dbFetchUI, generateSchedules
 from flask_cors import CORS
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -10,15 +11,20 @@ CORS(app)
 def index():
     return ''
 
-@app.route('/getselectitems', methods = ["GET"])
+@app.route('/search', methods = ["POST", "GET"])
 def getSelect():
-    return dbFetchUI.fetchSelectList("summer", "2018")
+    webData = str(request.get_json(force=True))
+    return dbFetchUI.search("summer", "2018", webData)
+
+@app.route('/courseData', methods = ["POST", "GET"])
+def getCourseInfo():
+    webData = request.get_json(force=True)
+    return dbFetchUI.courseInfo("summer", "2018", webData['field'], webData['num'])
 
 @app.route('/schedule', methods = ["POST", "GET"])
 def returnSchedule():
-    json = request.get_json(force=True)
-    schedules = generateSchedules.main(json, "summer", "2018")
-    print(schedules)
+    webData = request.get_json(force=True)
+    schedules = generateSchedules.main(webData, "summer", "2018")
     return schedules
 
 if __name__ == '__main__':
