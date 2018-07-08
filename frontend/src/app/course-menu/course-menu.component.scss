@@ -57,8 +57,28 @@
 .colorTag{
     height: 100%;
     border-radius: .25vw;
+    min-width: 35px;
 }
 
+@media (max-width: 767px) { 
+    .colorTag{
+        height: 3vh;
+        min-height: 35px;
+    }
+
+    .removeButton{
+        min-width: 35px;
+        min-height: 35px;
+        width: 3vh;
+        height: 3vh;
+        font-size: 12px;
+    }
+
+ }
+
 .courseLabel{
-    font-size: 17px;
+    font-size: 15px;
+    background-color: #f3f3f3;
+    overflow: scroll;
+    white-space: nowrap;
 }

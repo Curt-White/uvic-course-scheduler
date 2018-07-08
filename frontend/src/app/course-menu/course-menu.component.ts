@@ -1,10 +1,13 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, Output } from '@angular/core';
 import { HttpClient, HttpClientJsonpModule } from '@angular/common/http';
 import { API_URL } from '../env';
 import { FormsModule } from '@angular/forms';
 import { course } from '../course.model';
+import { calDataService } from '../calendarData.service';
 
 import {observable} from 'rxjs';
+import { EventEmitter } from '@angular/core';
+
 
 @Component({
   selector: 'app-course-menu',
@@ -13,18 +16,22 @@ import {observable} from 'rxjs';
 })
 
 export class CourseMenuComponent implements OnInit {
+
+  @Output() updateCal = new EventEmitter<any>();  //emit event so calendar component can update
+  
   currentCourses: course[];
 
   selectedOption;
   lastSelected;
   
-  searchOptions;
-  searchActive;
+  searchOptions;  //all of the elements in the search bar suggestions
+  searchActive; //showing or not showing the search nar
 
-  schedules;
+  schedules;  //all possible schedules given added courses
   
-  addError = false;
+  addError = false; //for handling errors when adding courses
 
+  //close the search bar if the page is clicked anywhere except on the search bar
   @HostListener('document:click', ['$event'])
   documentClick(event: MouseEvent) {
       if(document.activeElement.id == "courseSel"){
@@ -34,7 +41,7 @@ export class CourseMenuComponent implements OnInit {
       }
   }
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private service: calDataService) { 
     this.currentCourses = [];
     this.searchOptions = [];
     this.searchActive = false;
@@ -44,10 +51,14 @@ export class CourseMenuComponent implements OnInit {
   ngOnInit() {
   }
 
-  update(){
-    var courseList = this.http.post(API_URL + "/schedule", JSON.stringify(this.currentCourses)).subscribe(data =>{
-      this.schedules = data as JSON;
+  update(event:any):void{
+    if(this.currentCourses.length == 0){
+      return;
+    }
+    this.http.post(API_URL + "/schedule", JSON.stringify(this.currentCourses)).subscribe(data =>{
+      this.service.updateCalendar(data);
     });
+    this.updateCal.emit(event);
   }
 
   updateSearchBar(event:any){
@@ -78,7 +89,6 @@ export class CourseMenuComponent implements OnInit {
       var temp = new course(this.selectedOption['field'], this.selectedOption['num'], tempColor, this.selectedOption, this.selectedOption['name'], info);
       this.currentCourses.push(temp);
       this.getCourseInfo();
-      console.log(this.currentCourses[this.currentCourses.length-1]);
       this.addError = false;
     }
   }
@@ -99,9 +109,7 @@ export class CourseMenuComponent implements OnInit {
     this.currentCourses.splice(i,1);
   }
 
-  print(event:number){
-    for (var i = 0; i < this.currentCourses.length; i++){
-      console.log(this.currentCourses[i]);
-    }
+  print(){
+    console.log(this.schedules);
   }
 }

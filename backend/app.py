@@ -24,6 +24,7 @@ def getCourseInfo():
 @app.route('/schedule', methods = ["POST", "GET"])
 def returnSchedule():
     webData = request.get_json(force=True)
+    print(webData)
     schedules = generateSchedules.main(webData, "summer", "2018")
     return schedules
 

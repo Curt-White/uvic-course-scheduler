@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CourseMenuComponent } from '../course-menu/course-menu.component';
+import { calDataService } from '../calendarData.service';
 
 @Component({
   selector: 'app-calendar',
@@ -7,9 +8,22 @@ import { CourseMenuComponent } from '../course-menu/course-menu.component';
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit {
-  halfHours = new Array(26);
+  @Input() calUpdateEvent:any;
 
-  constructor() { }
+
+  schedules;
+  
+
+  halfHours:string[];
+  
+  constructor(private service: calDataService) { }
+
+  ngOnChanges() {
+    this.service.currentData.subscribe(calData => {
+      this.schedules = calData;
+    });
+    console.log(this.schedules);
+  }
 
   ngOnInit() {
   }
@@ -17,5 +31,4 @@ export class CalendarComponent implements OnInit {
   updateCalendar(){
     
   }
-
 }

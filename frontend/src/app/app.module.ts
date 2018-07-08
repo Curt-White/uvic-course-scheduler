@@ -10,6 +10,7 @@ import { CourseMenuComponent } from './course-menu/course-menu.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { CourseCardComponent } from './course-card/course-card.component';
 import { CourseHolderComponent } from './course-holder/course-holder.component';
+import { calDataService } from './calendarData.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { CourseHolderComponent } from './course-holder/course-holder.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [calDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
