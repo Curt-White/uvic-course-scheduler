@@ -53,12 +53,11 @@ export class CourseMenuComponent implements OnInit {
     if(this.currentCourses.length == 0){
       return;
     }
+    this.service.updateCourses(this.currentCourses);
     this.http.post(API_URL + "/schedule", JSON.stringify(this.currentCourses)).subscribe(data =>{
-      //console.log(data);
       this.service.updateCalendar(data);
       this.schedules = data;
     });
-    //console.log(this.service.currentData);
   }
 
   updateSearchBar(event:any){
