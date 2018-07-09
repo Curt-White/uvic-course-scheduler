@@ -16,8 +16,6 @@ import { EventEmitter } from '@angular/core';
 })
 
 export class CourseMenuComponent implements OnInit {
-
-  @Output() updateCal = new EventEmitter<any>();  //emit event so calendar component can update
   
   currentCourses: course[];
 
@@ -56,9 +54,11 @@ export class CourseMenuComponent implements OnInit {
       return;
     }
     this.http.post(API_URL + "/schedule", JSON.stringify(this.currentCourses)).subscribe(data =>{
+      //console.log(data);
       this.service.updateCalendar(data);
+      this.schedules = data;
     });
-    this.updateCal.emit(event);
+    //console.log(this.service.currentData);
   }
 
   updateSearchBar(event:any){

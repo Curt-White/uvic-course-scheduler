@@ -1,16 +1,29 @@
-<table class="table table-responsive table-striped table-condensed table-hover">
-    <thead>
-        <th>Time</th>
-        <th>Monday</th>
-        <th>Tuesday</th>
-        <th>Wednesday</th>
-        <th>Thursday</th>
-        <th>Friday</th>
-        <th>Saturday</th>
-    </thead>
-    <tbody >
-        <tr *ngFor = "let i of halfHours">
+<div class = " table-responsive calendar">
+    <table class="table table-striped table-condensed table-hover calendar">
+        <thead>
+            <th>Time</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+        </thead>
+        <tbody class = "calendar">
+            <tr *ngFor = "let i of timeSlots">
+                <td>{{i}}</td>
+                <td [id] = "i + '0'"></td>
+                <td [id] = "i + '1'"></td>
+                <td [id] = "i + '2'"></td>
+                <td [id] = "i + '3'"></td>
+                <td [id] = "i + '4'"></td>
+                <td [id] = "i + '5'"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-        </tr>
-    </tbody>
-</table>
+<div class = "courseCard">
+    <div class = "row"></div>
+    <div class = "row"></div>
+</div>
