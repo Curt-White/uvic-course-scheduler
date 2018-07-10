@@ -19,6 +19,8 @@ export class CalendarComponent implements OnInit {
 
   timeSlots:string[];
 
+  tableID = 0;
+
   recovery;
   
   constructor(private service: calDataService) { 
@@ -26,11 +28,9 @@ export class CalendarComponent implements OnInit {
     this.currentSchedule = this.schedules[0];
     this.timeSlots = [];
     this.fillhours();
-    this.recovery = $("#mainCal").clone();
-    console.log($("#mainCal"));
+
     this.service.currentData.subscribe(calData => {
-      console.log("dd");
-      this.clear();
+      
       this.schedules = calData;
       this.currentSchedule = this.schedules[0];
       this.updateCalendar();
@@ -38,7 +38,6 @@ export class CalendarComponent implements OnInit {
 
     this.service.currentCourseData.subscribe(courseData => {
       this.currentCourses = courseData;
-      //console.log(courseData);
     });
   }
 
@@ -58,17 +57,6 @@ export class CalendarComponent implements OnInit {
             halfhour = 3;
         }
     }
-  }
-
-  clear(){
-    //$("#schedTable").find("tr:gt(0)").remove();
-    //console.log($("#mainCal").find("td:gt(0)"));
-    $("#mainCal").find(".courseCard").remove();
-    //$("#mainCal").remove();
-    console.log(this.recovery);
-    //$("#mainCal").append(this.recovery);
-    //this.timeSlots = [];
-    //this.fillhours();
   }
 
   //remove the rows that fall under an item with a rowspan greater than one where rows is the height of the item aka the number of rows to be removed 
@@ -92,26 +80,53 @@ export class CalendarComponent implements OnInit {
     return "";
   }
 
+  refreshTable(){
+    
+    if(this.recovery == undefined){
+      this.recovery = ($("#mainCal").clone());
+      $("#mainCal").remove();
+    }else if(this.recovery != undefined){
+      $("#mainCal"+(this.tableID - 1)).remove(); 
+    }
+
+    $("#calTable").append(this.recovery.clone().attr("id", "mainCal"+this.tableID).css("overflow", "scroll"));
+    this.tableID++;
+  }
+
+  addCourseCard(curr, day){
+        var rows = Math.ceil((curr['et']-curr['st'])/50);
+        var appendBlock = $("#"+curr['st']+""+ day);
+        var card = $("#baseCard").clone();
+        card.attr('class', 'courseCard');
+        card.css('display', 'block');
+        card.appendTo(appendBlock);
+        card.attr('id', '');
+        appendBlock.attr('rowspan', rows);
+        var offsetHeight = card.first()[0].parentElement.clientHeight;
+        this.removeRows(curr['st'], rows-1, day);
+        console.log(card[0].parentElement.clientHeight);
+
+        var tempColor = this.getColor(curr['fos'], curr['num']);
+        card.css('background-color', tempColor).css('height', offsetHeight - (offsetHeight)*.25);
+        console.log(card[0].parentElement.clientHeight)
+  }
+
   updateCalendar(){
-    var rows:number;
-    if(this.currentCourses == undefined){
+    //deals with the intial string value of behvaioral subject
+    if(this.recovery == undefined && $("#mainCal").length == 0){
+      return;
+    }
+
+    this.refreshTable();
+
+    if(this.currentCourses == undefined || this.currentCourses.length == 0){
       return;
     }
     for(var i = 0; i < 6; i++){
       for(var j = 0; j < this.currentSchedule[i].length; j++){
         var curr = this.currentSchedule[i][j];
         //get number of half hour incrememnts the item will take up
-        rows = Math.ceil((curr['et']-curr['st'])/50);
-        var temp = $("#"+curr['st']+""+i);
-        var card = $("#baseCard").clone();
-        card.attr('class', 'courseCard');
-        card.appendTo(temp);
-        temp.attr('rowspan', rows);
-
-        this.removeRows(curr['st'], rows-1, i);
-        
-        var tempColor = this.getColor(curr['fos'], curr['num']);
-        card.first().css('background-color', tempColor);
+        this.addCourseCard(curr, i);
       }
     }
   }
