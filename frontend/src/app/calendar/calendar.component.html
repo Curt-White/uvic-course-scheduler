@@ -18,7 +18,7 @@
         </thead>
         <tbody class = "calendar" id = "mainCal">
             <tr *ngFor = "let i of timeSlots" class = "calRow">
-                <td>{{i}}</td>
+                <td>{{adjustTime(i)}}</td>
                 <td [id] = "i + '0'"></td>
                 <td [id] = "i + '1'"></td>
                 <td [id] = "i + '2'"></td>

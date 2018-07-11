@@ -87,6 +87,12 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  adjustTime(time){
+    var temp = time.match(/.{2}$/g);
+    time = time.replace(/.{2}$/g, ":" + temp );
+    return time;
+  }
+
   //remove the rows that fall under an item with a rowspan greater than one where rows is the height of the item aka the number of rows to be removed 
   removeRows(time, rows, day):void{
     for(var k = 0; k < rows; k++){
@@ -97,6 +103,10 @@ export class CalendarComponent implements OnInit {
       }
       $("#"+time+""+day).remove();
     }
+  }
+
+  clearEmptyRows(){
+
   }
 
   /* look up the color of the given course in the array of courses and return null if it is not present*/
@@ -128,7 +138,7 @@ export class CalendarComponent implements OnInit {
     var red = parseInt(hexColor[1] + hexColor[2], 16);
     var green = parseInt(hexColor[3] + hexColor[4], 16);
     var blue = parseInt(hexColor[5] + hexColor[6], 16);
-
+    console.log((red*0.299 + green*0.587 + blue*0.114));
     if ((red*0.299 + green*0.587 + blue*0.114) > 186){
       return "#000000";
     }else{
