@@ -11,21 +11,9 @@ app-course-menu{
     height: 95vh;
     border-left: solid lightgray .1px;
     border-right: solid lightgray .1px;
-    overflow: scroll;
+    overflow: hidden;
 }
 
-#header{
+app-top-bar{
     height: 5vh;
-    vertical-align: middle;
-    font-size: 30px;
-    padding-left: 1vw;
-}
-
-#topBar{
-    height: 5vh;
-    background-color: #f3f3f3;
-}
-
-#Title{
-    vertical-align: middle;
 }

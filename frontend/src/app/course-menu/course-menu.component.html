@@ -20,12 +20,13 @@
     </div>
   </div>
 </div>
-
+<div id = "courseBucket" class = "container-fluid">
   <div *ngIf = "addError == true" class = "row" style = "height: 8vh;">
       <div class="alert alert-danger errorMessage col-md-12">
           <strong>Failed</strong> to add <strong>{{lastSelected['field']}} {{lastSelected['num']}}</strong> has already been added to the schedule.
       </div>  
   </div>
+  
     <div *ngFor = "let item of currentCourses; let i = index" id = "courseHolder" class = "row">
       <div class = "courseCard col-md-12" [id] = "i"> 
         <div class = "row" style = "height: 100%;">
@@ -47,4 +48,5 @@
         </div>
       </div>
     </div>
+  </div>
 </div>

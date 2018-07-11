@@ -1,11 +1,32 @@
 .calendar{
     width: 100%;
-    height: 95vh;;
+    height: 88vh;;
     overflow: scroll;
+}
+
+.calNavButton{
+    height: 4vh;
+    width: 8vw;
+    min-height: 38px;
 }
 
 #baseCard{
     display: none;
+}
+
+#calNavWrap{
+    height: 7vh;
+    min-height: 48px;
+}
+
+#calNav{
+    margin: auto;
+}
+
+#calCount{
+    width: 8vw;
+    min-width: 70px;
+    text-align: center;
 }
 
 .courseCard{
@@ -13,5 +34,16 @@
     width: 100%;
     height: 100%;
     box-shadow: 5px 10px #a5a5a5;
-    border-radius: .25vw;
+    border-radius: .5vw;
+    text-align: center;
+}
+
+td{
+    min-width: 124px;
+    border: solid lightgray 0.05px;
+}
+
+th{
+    text-align: center;
+    border: solid lightgray 0.05px;
 }

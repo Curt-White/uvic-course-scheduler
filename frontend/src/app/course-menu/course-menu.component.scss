@@ -22,6 +22,12 @@
     z-index: 20;
 }
 
+#courseBucket{
+    margin-top: 1.5vh;
+    height: 85vh;
+    overflow: scroll;
+}
+
 #courseMenu{
     height: 100%;
     width: 100%;
@@ -60,7 +66,7 @@
     min-width: 35px;
 }
 
-@media (max-width: 767px) { 
+@media (max-width: 805px) { 
     .colorTag{
         height: 3vh;
         min-height: 35px;

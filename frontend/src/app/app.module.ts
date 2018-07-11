@@ -11,6 +11,7 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { CourseCardComponent } from './course-card/course-card.component';
 import { CourseHolderComponent } from './course-holder/course-holder.component';
 import { calDataService } from './calendarData.service';
+import { TopBarComponent } from './top-bar/top-bar.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { calDataService } from './calendarData.service';
     CalendarComponent,
     CourseCardComponent,
     CourseHolderComponent,
+    TopBarComponent,
   ],
   imports: [
     BrowserModule,
