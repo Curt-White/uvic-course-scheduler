@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { CourseMenuComponent } from '../course-menu/course-menu.component';
 import { calDataService } from '../calendarData.service';
+import * as jsPDF from 'jspdf';
+import * as html2canvas from "html2canvas";
 
 declare var jquery:any; 
 declare var $ :any;
@@ -52,6 +54,16 @@ export class CalendarComponent implements OnInit {
     
   }
 
+  /*ue html2doc and jspdf to create a pdf of the calendar for the user to save*/
+  savePDF(){
+    html2canvas(document.querySelector("#calTable")).then((canvas) => {
+        var img = canvas.toDataURL("image/png");
+        var calDoc = new jsPDF("p", "mm", "a4");
+        calDoc.addImage(img,20,20,170,260);
+        calDoc.save('calendar.pdf');
+    });
+  }
+
   /*go to the next item in the list and go to the first item if pressed and on the last item */
   nextRight(){
     this.calIndex ++;
@@ -87,7 +99,9 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  /*a small function to compensate for the poor planning of using time without a semicolon in it, inserts a semicolon into the time*/
   adjustTime(time){
+    time = time.toString();
     var temp = time.match(/.{2}$/g);
     time = time.replace(/.{2}$/g, ":" + temp );
     return time;
@@ -105,8 +119,9 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  /*remove some of the rows before and after the displayed courses*/
   clearEmptyRows(){
-
+    $("#mainCal"+(this.tableID - 1));
   }
 
   /* look up the color of the given course in the array of courses and return null if it is not present*/
@@ -163,7 +178,8 @@ export class CalendarComponent implements OnInit {
         this.removeRows(curr['st'], rows-1, day);
         //get heigh of parent div to make card full height of div
         var offsetHeight = card.first()[0].parentElement.clientHeight;
-        card.html("<strong>" + curr['fos'] + " " + curr['num'] + "</strong></br>" + curr['section']).css('height', offsetHeight - 25);
+        console.log(curr);
+        card.html("<strong>" + curr['fos'] + " " + curr['num'] + "</strong></br>" + curr['section'] + "</br>" + this.adjustTime(curr['st']) + " - " + this.adjustTime(curr['et']) ).css('height', offsetHeight - 25);
         //generate a random color for the card
         var tempColor = this.getColor(curr['fos'], curr['num']);
         card.css('background-color', tempColor);
@@ -196,5 +212,7 @@ export class CalendarComponent implements OnInit {
         this.addCourseCard(curr, i);
       }
     }
+    //update index for other components to see the currently displayed data
+    this.service.setCurrentSchedule(this.calIndex);
   }
 }

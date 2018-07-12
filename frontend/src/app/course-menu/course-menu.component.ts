@@ -8,6 +8,9 @@ import { calDataService } from '../calendarData.service';
 import {observable} from 'rxjs';
 import { EventEmitter } from '@angular/core';
 
+declare var jquery:any; 
+declare var $ :any;
+
 
 @Component({
   selector: 'app-course-menu',
@@ -19,15 +22,20 @@ export class CourseMenuComponent implements OnInit {
   
   currentCourses: course[];
 
+  //all of the elements in the search bar suggestions
   selectedOption;
-  lastSelected;
   
-  searchOptions;  //all of the elements in the search bar suggestions
-  searchActive; //showing or not showing the search nar
+  //all search options
+  searchOptions;
+  //showing or not showing the search bar, set false when anywhere on the screen is clicked  
+  searchActive; 
 
   schedules;  //all possible schedules given added courses
   
   addError = false; //for handling errors when adding courses
+  previousRadios;
+
+  currScheduleIndex = 0;
 
   //close the search bar if the page is clicked anywhere except on the search bar
   @HostListener('document:click', ['$event'])
@@ -44,9 +52,33 @@ export class CourseMenuComponent implements OnInit {
     this.searchOptions = [];
     this.searchActive = false;
     this.schedules = [];
+    this.previousRadios = [];
+
+    this.service.currentlyDisplayedSchedule.subscribe(index => {
+      this.currScheduleIndex = index;
+      this.updateCourseRadio();
+    });
   }
 
   ngOnInit() {
+  }
+
+  updateCourseRadio(){
+    for(var m = 0; m < this.previousRadios.length; m++){
+      this.previousRadios[m].css("font-weight", "normal").css("color", "black");
+    }
+    this.previousRadios = [];
+    if(this.schedules[this.currScheduleIndex] == undefined){
+      return;
+    }
+    for(var i = 0; i < this.schedules[this.currScheduleIndex].length; i++){
+      for(var j = 0; j < this.schedules[this.currScheduleIndex][i].length; j++){
+        var temp = this.schedules[this.currScheduleIndex][i][j];
+        var selectedRadio = $("#"+temp['fos'] + temp['num']+temp['section']).parent();
+        selectedRadio.css("font-weight", "bold").css("color", "blue");
+        this.previousRadios.push(selectedRadio);
+      }
+    }
   }
 
   update(event:any):void{
@@ -58,6 +90,7 @@ export class CourseMenuComponent implements OnInit {
     this.http.post(API_URL + "/schedule", JSON.stringify(this.currentCourses)).subscribe(data =>{
       this.service.updateCalendar(data);
       this.schedules = data;
+      this.updateCourseRadio();
     });
   }
 
@@ -71,7 +104,6 @@ export class CourseMenuComponent implements OnInit {
   }
 
   addCourse(event:any){
-    this.lastSelected = this.selectedOption;
 
     var currentNode = event.target;
     while(currentNode.childNodes.length < 3){

@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { LeftMenuComponent } from './left-menu/left-menu.component';
 import { CourseMenuComponent } from './course-menu/course-menu.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { CourseCardComponent } from './course-card/course-card.component';
@@ -16,7 +15,6 @@ import { TopBarComponent } from './top-bar/top-bar.component';
 @NgModule({
   declarations: [
     AppComponent,
-    LeftMenuComponent,
     CourseMenuComponent,
     CalendarComponent,
     CourseCardComponent,

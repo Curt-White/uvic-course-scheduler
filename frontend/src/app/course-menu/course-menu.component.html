@@ -35,13 +35,13 @@
             <strong>{{item.fos}} {{item.num}}</strong>
             <div *ngIf = "item.info">
               <div *ngIf = "item.info['Lecture'].length > 0">Lecture
-                  <form><div class = "radio"  *ngFor = "let m of item.info['Lecture']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}LecRadio"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label></div></form>
+                  <form><div class = "radio"  *ngFor = "let m of item.info['Lecture']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}LecRadio" id = "{{currentCourses[i].fos+currentCourses[i].num+m['section']}}" class = "classForm"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label></div></form>
               </div>
               <div *ngIf = "item.info['Lab'].length > 0">Lab
-                  <form><div class = "radio"  *ngFor = "let m of item.info['Lab']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}LabRadio"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label></div></form>
+                  <form><div class = "radio"  *ngFor = "let m of item.info['Lab']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}LabRadio" id = "{{currentCourses[i].fos+currentCourses[i].num+m['section']}}" class = "classForm"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label></div></form>
               </div>
               <div *ngIf = "item.info['Tutorial'].length > 0">Tutorial
-                  <form><div class = "radio"  *ngFor = "let m of item.info['Tutorial']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}TutRadio"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label></div></form>
+                  <form><div class = "radio"  *ngFor = "let m of item.info['Tutorial']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}TutRadio" id = "{{currentCourses[i].fos+currentCourses[i].num+m['section']}}" class = "classForm"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label></div></form>
               </div>
             </div>
           </div>
