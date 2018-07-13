@@ -16,6 +16,7 @@ class course:
         dbName = "summer2018.db"
         conn = sqlite3.connect(dbName)
         myCursor = conn.cursor()
+        #query for the exact course that added on the web page and select all of the courses dependencies all lecture, lab, and tutorial
         selectList = myCursor.execute("SELECT * FROM '{tableName}' WHERE course_field = '{c_field}' AND course_num = '{c_num}' And section_type = '{c_type}'".format(tableName = "courses", c_field = courseName, c_num = courseNum, c_type = courseType)).fetchall()
         return(self.createSection(selectList))
     
@@ -37,11 +38,13 @@ class section:
     """transform the time into 24 hour time without colon and seperate day string into list"""
     def extractTime(self, courseInfo):
         oldTime = courseInfo[5]
+        #search for the time and date in the given data to extract the start and end time
         oldTime = timeOfDay = re.search(r'(^((\d{2}|\d)\:\d{2}) ([ap]m)) - ((\d{2}|\d)\:\d{2} ([ap]m))', oldTime)
         if oldTime == None:
             return "N/A"
         start = oldTime.group(2)
         end = oldTime.group(5)
+        #remove the semi-colon and parse to an int to make into 24 hour time
         start = int(re.sub(r'[^0-9]', '', start))
         end = int(re.sub(r'[^0-9]', '', end))
         #add 12 hours if the course is in the PM to make 24 hour time
@@ -54,15 +57,16 @@ class section:
         return[days, start, end]
 
 class calendar:
-    """calendar object checks all conflicts of a possible schedule"""
     dayValues = {'M': 0,'T': 1, 'W': 2, 'R': 3, 'F': 4, 'S': 5}
 
     def __init__(self):
         self.daysOfWeek = [[],[],[],[],[],[]]
         self.numOfCourses = 0
 
+    """Add new courses to the calendar object in the correct day"""
     def addCourse(self, course):
         self.numOfCourses += 1
+        #append the course to all of the days of the week it occurs
         for day in course.days:
             self.daysOfWeek[self.dayValues[day]].append(course)
 
@@ -71,6 +75,7 @@ class calendar:
     def checkConflict(self, newSection):
         if self.numOfCourses == 0:
             return False
+        #the start and endtimes for a given course
         B1 = newSection.start
         B2 = newSection.end
         for day in newSection.days:
@@ -86,6 +91,7 @@ class calendar:
 def constructList(list):
     newList = []
     for course in list:
+        #dont add a type of section if the course does not have any lab, lecture, or tutorial sections
         if len(course.lectures) > 0:
             newList.append(course.lectures)
         if len(course.labs) > 0:
@@ -98,6 +104,7 @@ def constructList(list):
 def possible(possibility):
     newCalendar = calendar()
     for course in possibility:
+        #check to see if any two calendar items have conflicting times
         if newCalendar.checkConflict(course):
             return
         else:
@@ -123,9 +130,10 @@ def generateCalendar(listOfCourses, possibility):
             generateCalendar(listOfCourses[1:], currentPossiblity)
         return
 
+"""turn all of the possible schedules into dictionary formats so they can be changed into json format easily"""
 def toJson():
-    print(schedules)
     allPossibleWeeks = []
+    #one week is equivalent to one schedule possiblity
     for week in schedules:
         oneWeek = []
         for day in week.daysOfWeek:
@@ -141,15 +149,15 @@ def main(requestedCourses, term, year):
     global schedules
     schedules = []
     courses = []
+    #for each requested course make a course objects and added it to the list of courses
     for section in requestedCourses:
         courses.append(course(section['fos'], section['num'], term , year))
+    #append each individual list into another list so each list of type lecture and lab and tutorial all exist in one list
     allCourses = constructList(courses)
     possibility = []
-    #print(schedules,"really Befor")
+    #generate all of the possible calendars and append them to global schedules
     generateCalendar(allCourses, possibility)
-    #print(schedules,"before")
     schedules = json.JSONEncoder().encode(toJson())
-    #print(schedules,"after")
     return schedules
 
 if __name__ == "__main__":
