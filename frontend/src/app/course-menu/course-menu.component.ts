@@ -46,7 +46,7 @@ export class CourseMenuComponent implements OnInit {
         this.searchActive = false;
       }
   }
-  
+
   constructor(private http: HttpClient, private service: calDataService) { 
     this.currentCourses = [];
     this.searchOptions = [];
@@ -150,6 +150,9 @@ export class CourseMenuComponent implements OnInit {
 
   /*calls server for list of courses based on the value of the element passed */
   getSearchResults(value:string){
+    if(value.length < 2){
+      return;
+    }
     this.http.post(API_URL + "/search", JSON.stringify(value)).subscribe(data => {
       this.searchOptions = data as JSON;
     });
@@ -158,5 +161,8 @@ export class CourseMenuComponent implements OnInit {
   /*remove a given class based on its index in the list of courses displayed on the webpage */
   removeClass(i:number){
     this.currentCourses.splice(i,1);
+  }
+  print(f:any){
+    console.log(f );
   }
 }

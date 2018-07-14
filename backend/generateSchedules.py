@@ -38,10 +38,11 @@ class section:
     """transform the time into 24 hour time without colon and seperate day string into list"""
     def extractTime(self, courseInfo):
         oldTime = courseInfo[5]
+        #return empty arrays if the class has no definite schedulable times
+        if(oldTime == "N/A" or oldTime == "TBA" or oldTime == None):
+            return [[],[],[]]
         #search for the time and date in the given data to extract the start and end time
         oldTime = timeOfDay = re.search(r'(^((\d{2}|\d)\:\d{2}) ([ap]m)) - ((\d{2}|\d)\:\d{2} ([ap]m))', oldTime)
-        if oldTime == None:
-            return "N/A"
         start = oldTime.group(2)
         end = oldTime.group(5)
         #remove the semi-colon and parse to an int to make into 24 hour time

@@ -55,7 +55,7 @@ export class CalendarComponent implements OnInit {
   }
 
   deleteAll(){
-    this.currentCourses = undefined;
+    this.currentCourses = [];
     this.service.updateCourses(this.currentCourses);
     this.calIndex = 0;
     this.updateCalendar();
