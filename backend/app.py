@@ -14,19 +14,19 @@ def index():
 @app.route('/search', methods = ["POST", "GET"])
 def getSelect():
     webData = str(request.get_json(force=True))
-    return dbFetchUI.search("summer", "2018", webData)
+    return dbFetchUI.search("fall", "2018", webData)
 
 @app.route('/courseData', methods = ["POST", "GET"])
 def getCourseInfo():
     webData = request.get_json(force=True)
-    return dbFetchUI.courseInfo("summer", "2018", webData['field'], webData['num'])
+    return dbFetchUI.courseInfo("fall", "2018", webData['field'], webData['num'])
 
 @app.route('/schedule', methods = ["POST", "GET"])
 def returnSchedule():
     webData = request.get_json(force=True)
     print(webData)
-    schedules = generateSchedules.main(webData, "summer", "2018")
+    schedules = generateSchedules.main(webData, "fall", "2018")
     return schedules
 
 if __name__ == '__main__':
-     app.run(port=5000)
+    app.run(port=5000)

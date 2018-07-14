@@ -54,6 +54,13 @@ export class CalendarComponent implements OnInit {
     
   }
 
+  deleteAll(){
+    this.currentCourses = undefined;
+    this.service.updateCourses(this.currentCourses);
+    this.calIndex = 0;
+    this.updateCalendar();
+  }
+   
   /*ue html2doc and jspdf to create a pdf of the calendar for the user to save*/
   savePDF(){
     html2canvas(document.querySelector("#calTable")).then((canvas) => {
@@ -153,7 +160,6 @@ export class CalendarComponent implements OnInit {
     var red = parseInt(hexColor[1] + hexColor[2], 16);
     var green = parseInt(hexColor[3] + hexColor[4], 16);
     var blue = parseInt(hexColor[5] + hexColor[6], 16);
-    console.log((red*0.299 + green*0.587 + blue*0.114));
     if ((red*0.299 + green*0.587 + blue*0.114) > 186){
       return "#000000";
     }else{
@@ -178,7 +184,6 @@ export class CalendarComponent implements OnInit {
         this.removeRows(curr['st'], rows-1, day);
         //get heigh of parent div to make card full height of div
         var offsetHeight = card.first()[0].parentElement.clientHeight;
-        console.log(curr);
         card.html("<strong>" + curr['fos'] + " " + curr['num'] + "</strong></br>" + curr['section'] + "</br>" + this.adjustTime(curr['st']) + " - " + this.adjustTime(curr['et']) ).css('height', offsetHeight - 25);
         //generate a random color for the card
         var tempColor = this.getColor(curr['fos'], curr['num']);
@@ -188,21 +193,33 @@ export class CalendarComponent implements OnInit {
         card.css('color', fontColor);
   }
 
+  /* */
+  clearEmpty(){
+    $("#mainCal"+(this.tableID - 1)).remove(); 
+  }
+
   /*update the calendar object by removing all the items currently on the table and filling it with new items
   gets called every time an object is deleted or added and when the user chooses to go to the next schedule possibility*/
   updateCalendar(){
+    if(this.schedules != undefined && this.currentCourses != undefined && this.schedules.length == 0 && this.currentCourses.length > 0){
+      $("#calCount").html("<strong>"+ "None" + "</strong>");
+      this.clearEmpty();
+      return;
+    }
     //deals with the intial string value of behvaioral subject
+    $("#calCount").html("<strong>"+(this.calIndex + 1) + " of " + this.schedules.length + "</strong>");
     if(this.recovery == undefined && $("#mainCal").length == 0){
+
       return;
     }
     //replace the filled table with an empty one
     this.refreshTable();
-
     //update the calender number count
     $("#calCount").html("<strong>"+(this.calIndex + 1) + " of " + this.schedules.length + "</strong>");
 
     //return function if it gets called on component inititalization
     if(this.currentCourses == undefined || this.currentCourses.length == 0){
+      $("#calCount").html("<strong>"+ "None" + "</strong>");
       return;
     }
     //make a new card and append it to the calendar

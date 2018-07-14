@@ -12,7 +12,6 @@ terms = {"summer": "5", "winter": "1" , "fall": "9"}
 def makeCourseList(term, year):
     courseNames = []
     allFosInfo = []
-    print(term)
     #go to the url which contains all of the fields of study that is updated for the given semester
     url = "https://web.uvic.ca/calendar"+str(year)+"-0"+terms[term]+"/courses/"
     with urllib.request.urlopen(url) as url:
@@ -52,6 +51,7 @@ def makeCourseList(term, year):
         jsobj = {"name": fos, "nums": tables}
         if(len(tables)>0):
             allFosInfo.append(jsobj)
+        print(jsobj)
     return allFosInfo
 
 """returns true if the course is available in the given term and false if not"""
@@ -91,7 +91,7 @@ def prepEntry(string1, infoList = None):
     
 """takes a list of courses and calls other functions to produce entries which this function then enters into the database"""
 def FillDataBase(fosList, term, year):
-    dbName = term+str(year)+".db"
+    dbName = "courseInfo.db"
     conn = sqlite3.connect(dbName)
     myCursor = conn.cursor()
     #cycle through every entry in the given file and insert every course into the database
@@ -105,6 +105,7 @@ def FillDataBase(fosList, term, year):
                 else:
                     myCursor.execute("INSERT INTO {tableName} VALUES(?,?,?,?,?,?,?,?,?,?)".format(tableName = term+year),(entry["name"],str(course), section['course_name'],section['section'], section['crn'], section['time'], section['days'], section['building'], section['professor'], section['section_type']))
                 conn.commit()
+        print(fosList)
 
 """get all of the information from each page of every course and return alist of dictionaries where each dictionary has 1 course section on it aka A01, A02 would each be a list item"""
 def getClassInfo(fos,num,term,year):
@@ -140,8 +141,8 @@ def constructTable(myCursor, term, year):
         course_name text,
         section text,
         crn text,
-        time text,
-        days text,
+        course_time text,
+        course_days text,
         building text,
         professor text,
         section_type text
@@ -154,9 +155,8 @@ def main(term, year):
     constructTable(myCursor, term, year)
     conn.commit()
     conn.close()
-    
     listOfCourses = makeCourseList(term, year)
     FillDataBase(listOfCourses, term, year)
 
 if __name__ == "__main__":
-    main("summer", "2018")
+    main("fall", "2018")

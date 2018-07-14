@@ -13,11 +13,11 @@ class course:
 
     """retrieve course data from the database and create lists of sections"""
     def dbRetrieve(self, courseName, courseNum, term, year, courseType):
-        dbName = "summer2018.db"
+        dbName = "courseInfo.db"
         conn = sqlite3.connect(dbName)
         myCursor = conn.cursor()
         #query for the exact course that added on the web page and select all of the courses dependencies all lecture, lab, and tutorial
-        selectList = myCursor.execute("SELECT * FROM '{tableName}' WHERE course_field = '{c_field}' AND course_num = '{c_num}' And section_type = '{c_type}'".format(tableName = "courses", c_field = courseName, c_num = courseNum, c_type = courseType)).fetchall()
+        selectList = myCursor.execute("SELECT * FROM '{tableName}' WHERE course_field = '{c_field}' AND course_num = '{c_num}' And section_type = '{c_type}'".format(tableName = term+year, c_field = courseName, c_num = courseNum, c_type = courseType)).fetchall()
         return(self.createSection(selectList))
     
     def createSection(self, selectedCourses):

@@ -3,10 +3,10 @@ import json
 
 """this function is not currently in use"""
 def fetchSelectList(term, year):
-    dbName = "summer2018.db"
+    dbName = "courseInfo.db"
     conn = sqlite3.connect(dbName)
     myCursor = conn.cursor()
-    selectOptions = myCursor.execute("SELECT DISTINCT course_field,course_num, course_name FROM {tableName}".format(tableName = "courses")).fetchall()
+    selectOptions = myCursor.execute("SELECT DISTINCT course_field,course_num, course_name FROM {tableName}".format(tableName = term+year)).fetchall()
     objectList = []
     for field in selectOptions:
         newDict = {}
@@ -19,11 +19,11 @@ def fetchSelectList(term, year):
 """gets the search bar content and searches the database for anything similar to it and returns a list of all the possible items to be displayed as suggestions for the search bar"""
 def search(term, year, searchCode):
     #temp set to summer2018 for testing eventually will be changed to courseInfo.db
-    dbName = "summer2018.db"
+    dbName = "courseInfo.db"
     conn = sqlite3.connect(dbName)
     myCursor = conn.cursor()
     #query database for anything sinilat to the searchCode
-    options = myCursor.execute("SELECT DISTINCT course_field, course_num, course_name FROM {tableName} WHERE (course_field || ' ' || course_num) LIKE '%{input}%' OR (course_name LIKE '%{input}%')".format(tableName = "courses", input = searchCode)).fetchall()
+    options = myCursor.execute("SELECT DISTINCT course_field, course_num, course_name FROM {tableName} WHERE (course_field || ' ' || course_num) LIKE '%{input}%' OR (course_name LIKE '%{input}%') AND course_time != 'N/A' AND course_time != 'TBA' ".format(tableName = term+year, input = searchCode)).fetchall()
     objectList = []
     #make a dictionary of the items available based on the course
     for field in options:
@@ -36,10 +36,10 @@ def search(term, year, searchCode):
 
 """find all of the course times for each courses lab, lecture and tutorial and then return it as a dictionary"""
 def courseInfo(term, year, fos, num):
-    dbName = "summer2018.db"
+    dbName = "courseInfo.db"
     conn = sqlite3.connect(dbName)
     myCursor = conn.cursor()
-    data = myCursor.execute("SELECT * FROM {tableName} WHERE (course_field = '{course_fos}') AND (course_num = '{course_number}')".format(tableName = "courses", course_fos = fos, course_number = num)).fetchall()
+    data = myCursor.execute("SELECT * FROM {tableName} WHERE (course_field = '{course_fos}') AND (course_num = '{course_number}')".format(tableName = term+year, course_fos = fos, course_number = num)).fetchall()
     #dictionary of three lists that will be displayed on the webpage as a radio for implying certain course times
     dataList = {}
     lecture = []
