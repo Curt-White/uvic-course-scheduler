@@ -69,6 +69,10 @@ export class CourseMenuComponent implements OnInit {
   ngOnInit() {
   }
 
+  enforceSection(event:any){
+    console.log(event.target.id);
+  }
+
   /*use data from the currently addded course in the calendar element to highlight the courses displayed in the side menu*/
   updateCourseRadio(){
     //on change of schedule we set all the previously coloured items to normal colouring

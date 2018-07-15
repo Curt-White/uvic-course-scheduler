@@ -26,6 +26,7 @@ def returnSchedule():
     webData = request.get_json(force=True)
     print(webData)
     schedules = generateSchedules.main(webData, "fall", "2018")
+    print(schedules)
     return schedules
 
 if __name__ == '__main__':

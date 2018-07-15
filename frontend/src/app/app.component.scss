@@ -1,5 +1,5 @@
 app-left-menu{
-    height: 95vh;
+    height: auto;
 }
 
 app-calendar{
@@ -8,7 +8,7 @@ app-calendar{
 }
 
 app-course-menu{
-    height: 95vh;
+    height: auto;
     border-left: solid lightgray .1px;
     border-right: solid lightgray .1px;
     overflow: hidden;
@@ -16,4 +16,5 @@ app-course-menu{
 
 app-top-bar{
     height: 5vh;
+    min-height: 43px;
 }

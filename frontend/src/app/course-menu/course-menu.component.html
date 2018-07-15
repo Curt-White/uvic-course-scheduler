@@ -35,7 +35,7 @@
             <strong>{{item.fos}} {{item.num}}</strong>
             <div *ngIf = "item.info">
               <div *ngIf = "item.info['Lecture'].length > 0">Lecture
-                  <form><div class = "radio"  *ngFor = "let m of item.info['Lecture']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}LecRadio" id = "{{currentCourses[i].fos+currentCourses[i].num+m['section']}}" class = "classForm"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label>
+                  <form><div class = "radio"  *ngFor = "let m of item.info['Lecture']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}LecRadio" id = "{{currentCourses[i].fos+currentCourses[i].num+m['section']}}" class = "classForm" (click) = "enforceSection($event)"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label>
                     <div *ngIf = "m['time'] == 'TBA' ">
                       <div class="alert alert-danger errorMessage col-md-12">
                         <strong>This Section Has No Schedulable Times</strong>
@@ -45,10 +45,10 @@
                   </form>
               </div>
               <div *ngIf = "item.info['Lab'].length > 0">Lab
-                  <form><div class = "radio"  *ngFor = "let m of item.info['Lab']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}LabRadio" id = "{{currentCourses[i].fos+currentCourses[i].num+m['section']}}" class = "classForm"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label></div></form>
+                  <form><div class = "radio"  *ngFor = "let m of item.info['Lab']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}LabRadio" id = "{{currentCourses[i].fos+currentCourses[i].num+m['section']}}" class = "classForm" (click) = "enforceSection($event)"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label></div></form>
               </div>
               <div *ngIf = "item.info['Tutorial'].length > 0">Tutorial
-                  <form><div class = "radio"  *ngFor = "let m of item.info['Tutorial']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}TutRadio" id = "{{currentCourses[i].fos+currentCourses[i].num+m['section']}}" class = "classForm"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label></div></form>
+                  <form><div class = "radio"  *ngFor = "let m of item.info['Tutorial']"><label><input type = "radio" name = "{{currentCourses[i].fos}}{{currentCourses[i].num}}TutRadio" id = "{{currentCourses[i].fos+currentCourses[i].num+m['section']}}" class = "classForm" (click) = "enforceSection($event)"> {{m['section']}} {{m['crn']}} {{m['time']}} {{m['days']}}</label></div></form>
               </div>
             </div>
           </div>

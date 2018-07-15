@@ -7,9 +7,9 @@ schedules = []
 class course:
     """An object that holds all the sections for each individual courses added"""
     def __init__(self, courseName, courseNum, term, year):
-        self.lectures = self.dbRetrieve(courseName, courseNum, term, year, "Lecture")
-        self.labs = self.dbRetrieve(courseName, courseNum, term, year, "Lab")
-        self.tutorials = self.dbRetrieve(courseName, courseNum, term, year, "Tutorial")
+        self.lectures = self.dbRetrieve(courseName, courseNum, term, year, ["Lecture" , "Lecture Topic" , "Practicum"])
+        self.labs = self.dbRetrieve(courseName, courseNum, term, year, ["Lab","Gradable Lab", ""])
+        self.tutorials = self.dbRetrieve(courseName, courseNum, term, year, ["Tutorial", "",""])
 
     """retrieve course data from the database and create lists of sections"""
     def dbRetrieve(self, courseName, courseNum, term, year, courseType):
@@ -17,7 +17,8 @@ class course:
         conn = sqlite3.connect(dbName)
         myCursor = conn.cursor()
         #query for the exact course that added on the web page and select all of the courses dependencies all lecture, lab, and tutorial
-        selectList = myCursor.execute("SELECT * FROM '{tableName}' WHERE course_field = '{c_field}' AND course_num = '{c_num}' And section_type = '{c_type}'".format(tableName = term+year, c_field = courseName, c_num = courseNum, c_type = courseType)).fetchall()
+        selectList = myCursor.execute("SELECT * FROM '{tableName}' WHERE course_field = '{c_field}' AND course_num = '{c_num}' AND (section_type = '{c_type}' OR section_type = '{c_type2}' OR section_type = '{c_type3}')".format(tableName = term+year, c_field = courseName, c_num = courseNum, c_type = courseType[0] , c_type2 = courseType[1], c_type3 = courseType[2])).fetchall()
+        print(selectList)
         return(self.createSection(selectList))
     
     def createSection(self, selectedCourses):
